@@ -118,3 +118,9 @@ EduTrack/
 
 ---
 
+## Demo Video
+
+Watch the full walkthrough of EduTrack here:  
+[🎥 EduTrack Demo on Loom](https://www.loom.com/share/628f2295139a406590511c1fe9bc57c0?sid=dc28bc04-1585-4864-90e1-e760eccd8981)
+
+
