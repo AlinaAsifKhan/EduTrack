@@ -50,45 +50,71 @@ body {
   font-weight: 500;
 }
 
-/* Role Selection */
-.role-select {
+.login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  gap: 1.5rem;
+  background-color: var(--bg-color);
 }
 
-.admin-button, .student-button {
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  font-weight: 500;
+.login-box {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-box input {
+  padding: 0.8rem;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-box input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.login-box button {
+  padding: 0.8rem;
+  background-color: var(--primary-color);
+  color: white;
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--box-shadow);
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
-.admin-button {
-  background-color: var(--secondary-color);
-  color: white;
-}
-
-.admin-button:hover {
-  background-color: #27ae60;
-  transform: translateY(-2px);
-}
-
-.student-button {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.student-button:hover {
+.login-box button:hover {
   background-color: var(--primary-dark);
-  transform: translateY(-2px);
 }
+
+.login-box .error {
+  color: var(--danger-color);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
 
 /* Forms and Inputs */
 .student-form {
@@ -104,6 +130,13 @@ body {
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
   transition: border-color 0.2s;
+}
+
+.student-form select {
+   color:#7f8c8d;
+   border: 1px solid #ddd;
+   border-radius: var(--border-radius);
+   transition: border-color 0.2s;
 }
 
 .student-form input:focus {
@@ -134,8 +167,7 @@ body {
 }
 
 .search-sort-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -148,6 +180,7 @@ body {
 .search-bar input {
   flex: 1;
   padding: 0.6rem;
+  width:250px;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
 }
@@ -159,10 +192,15 @@ body {
 
 .sort-section select {
   flex: 1;
+  width:150px;
   padding: 0.6rem;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
   background-color: white;
+}
+
+.sort-section button{
+  width:120
 }
 
 .import-export-section {
@@ -189,6 +227,11 @@ body {
   top: 0;
   left: 0;
   cursor: pointer;
+}
+
+.only-star-button{
+  background-color: #ddd;
+  width: 100px;
 }
 
 /* Buttons */

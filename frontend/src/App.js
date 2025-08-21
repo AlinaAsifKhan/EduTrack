@@ -11,8 +11,13 @@ function App() {
     semester: '',
     gpa: ''
   });
+  const [username, setUsername] = useState('');
+
+  const [ password, setPassword] = useState('');
 
   const [role, setRole] = useState(null);
+
+  const departments=['CS','SE','AI','CGV','IT','DS']
 
   const [editIndex, setEditIndex] = useState(null);
 
@@ -30,6 +35,26 @@ function App() {
 
   const [failingStudents, setFailingStudents] = useState([]);
 
+  const handleLogin = (e) =>{
+      e.preventDefault();
+
+        if(username === "alina@admin" && password === "admin123"){
+        setRole("Admin")
+      } else if (username === "ayesha@admin" && password === "admin123"){
+        setRole("Admin")
+      } else if (username === "lin@student" && password === "student123"){
+        setRole("student")
+      }else if(username ==="zaineb@student" && password === "student123"){
+        setRole("student")
+      }else{
+        alert("Invalid Credentials!")
+      }
+
+      setUsername("")
+      setPassword("")
+  }
+
+
   useEffect(() => {
     axios.get('http://localhost:8000/api/students/')
       .then(res => {
@@ -43,16 +68,16 @@ function App() {
 
   useEffect(() => {
       getTopStudentsByDept(topDept);
-    }, [students, topDept]);
-
-  const handleChange = (e) => {
-    setStudent({ ...student, [e.target.name]: e.target.value });
-  };
+    }, [originalList, topDept]);
 
   useEffect(() =>{
     const failing = originalList.filter(s => s.gpa<2.0);
     setFailingStudents(failing);
-  },[students]);
+  },[originalList]);
+
+  const handleChange = (e) => {
+    setStudent({ ...student, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,7 +128,7 @@ function App() {
       name: selectedStudent.name,
       roll_number: selectedStudent.roll_number,
       department: selectedStudent.department,
-      semester: selectedStudent.semester.toString(),
+      semester: selectedStudent.semester,//lsadnlwfwlbflwbfl
       gpa: selectedStudent.gpa.toString()
     });
 
@@ -189,7 +214,6 @@ function App() {
               return;
             }
 
-            // POST new students to backend one by one (or you can do batch if API supports)
             const postPromises = newStudents.map(student =>
               axios.post('http://localhost:8000/api/students/', student)
                 .then(res => res.data)
@@ -250,16 +274,25 @@ function App() {
       semester : sem,
       avgGPA : (semesterGroups[sem].totalGPA / semesterGroups[sem].count).toFixed(2)
     }))
-  },[students]);
+  },[originalList]);
 
-
+   const handleOnlyStar =()=>{
+     let starred = originalList.filter(s=> s.gpa>3.0)
+       setStudents(starred);
+   };
 
   return (
     <>
       {role === null ? (
-        <div className="role-select">
-          <button onClick={() => setRole("Admin")} className="admin-button">Admin</button>
-          <button onClick={() => setRole("Student")} className="student-button">Student</button>
+        <div className='login-container'>
+          <div className='login-box'>
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+              <input type = "text" placeholder='Username' value ={username} onChange={(e)=>setUsername(e.target.value)} required/>
+              <input type= "password" placeholder = "Password" value = {password} onChange={(e)=>setPassword(e.target.value)} required/>
+              <button type="submit">Login</button>
+            </form>
+          </div>
         </div>
       ) : (
         <div className="container">
@@ -271,9 +304,19 @@ function App() {
                 <form className="student-form" onSubmit={handleSubmit}>
                   <input type="text" name="name" placeholder="Name" value={student.name} onChange={handleChange} required />
                   <input type="text" name="roll_number" placeholder="Roll Number" value={student.roll_number} onChange={handleChange} required />
-                  <input type="text" name="department" placeholder="Department" value={student.department} onChange={handleChange} required />
-                  <input type="number" step="1" name="semester" placeholder="Semester" value={student.semester} onChange={handleChange} required />
-                  <input type="number" step="0.01" name="gpa" placeholder="GPA" value={student.gpa} onChange={handleChange} required />
+                  <select 
+                    name="department"
+                    value={student.department} 
+                    onChange={handleChange}
+                    required
+                    >
+                    <option value="">Select Department</option>
+                    {departments.map((dept, index) => (
+                      <option key={index} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                  <input type="number" step="1" name="semester" placeholder="Semester" value={student.semester} onChange={handleChange} min="1" max="8" required />
+                  <input type="number" step="0.01" name="gpa" placeholder="GPA" value={student.gpa} onChange={handleChange} min="0" max="4.00" required />
                   <button type="submit">{editIndex !== null ? 'Update Student' : 'Add Student'}</button>
                 </form>
               </div>
@@ -308,6 +351,9 @@ function App() {
                   </label>
                 )}
               </div>
+               
+             <button className="only-star-button" onClick={handleOnlyStar}>Only ⭐️</button>
+
             </div>
           </section>
 
